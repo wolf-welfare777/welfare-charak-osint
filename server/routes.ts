@@ -4,13 +4,14 @@ import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions";
 // @ts-ignore
 import input from "input";
-import fs from "fs"; // File likhne ke liye
+import fs from "fs";
 import path from "path";
 import { savedSession } from "./session";
 
+// 🚀 Welfare OSInt: Master Competition Build (Auto-File Mode)
 export async function registerRoutes({ app, httpServer }: { app: Express, httpServer: Server }) {
-  const apiId = 32269534; 
-  const apiHash = "97705f5951b522a122a438c5f400984b";
+  const apiId = 34558337; 
+  const apiHash = "f7654966f5280ce988af1551a7149960";
   const stringSession = new StringSession(savedSession || "");
   
   const client = new TelegramClient(stringSession, apiId, apiHash, { connectionRetries: 5 });
@@ -24,23 +25,23 @@ export async function registerRoutes({ app, httpServer }: { app: Express, httpSe
         onError: (err) => console.log("Engine Error:", err),
       });
 
-      // 🎯 AUTOMATIC SESSION SAVER (Wahi purana tarika)
-      client.session.save();
-      const newSession = (client.session as any).save() as string;
-      if (newSession && newSession !== savedSession) {
+      // 💾 AUTOMATIC FILE GENERATOR: OTP ke baad ye khud session file update karega
+      const currentSession = client.session.save() as unknown as string;
+      if (currentSession !== savedSession) {
         const sessionFilePath = path.join(__dirname, "session.ts");
-        const fileContent = `export const savedSession = "${newSession}"`;
-        fs.writeFileSync(sessionFilePath, fileContent);
-        console.log("✅ SESSION SAVED TO session.ts! Ab bas push kardo.");
+        const content = `export const savedSession = "${currentSession}";`;
+        fs.writeFileSync(sessionFilePath, content);
+        console.log("✅ SUCCESS: session.ts update ho gayi! Ab bas GitHub push karo.");
       }
     } catch (e) { console.log("Connection Failed:", e); }
   })();
 
+  // 🔍 Search API - Aapka Original Competition Logic
   app.post("/api/search", async (req, res) => {
     const { phone } = req.body;
     try {
-      const warningHeader = "⚠️ [WELFARE OSINT - ENCRYPTED INVESTIGATION]\n" +
-                            "Status: Authorized | Privacy: Partial Identity Mode\n" +
+      const warningHeader = "⚠️ [WELFARE OSINT - INVESTIGATIVE DASHBOARD]\n" +
+                            "Status: Authorized Search | Mode: Partial Privacy\n" +
                             "-------------------------------------------\n\n";
 
       await client.sendMessage("@Sankixdleak_bot", { message: phone });
@@ -59,21 +60,10 @@ export async function registerRoutes({ app, httpServer }: { app: Express, httpSe
                   && !l.includes("hiteckgroop");
         })
         .map(line => {
-          const l = line.toLowerCase();
-          if (l.includes("telephone") || l.includes("document")) {
-            const parts = line.split(":");
-            const val = parts[1]?.trim() || "";
-            return `${parts[0]}: ${val.slice(0, 4)}***${val.slice(-3)}`;
-          } 
-          if (l.includes("full name") || l.includes("father")) {
-            const parts = line.split(":");
-            const name = parts[1]?.trim() || "";
-            return `${parts[0]}: ${name.slice(0, 4)}****${name.slice(-2)}`;
-          }
-          if (l.includes("adres")) {
-            return line.substring(0, Math.floor(line.length * 0.6)) + "**";
-          }
-          return line;
+          const splitIndex = Math.floor(line.length / 2);
+          const visiblePart = line.substring(0, splitIndex);
+          const maskedPart = "*".repeat(line.length - splitIndex);
+          return visiblePart + maskedPart;
         });
 
       res.json({ 
@@ -81,7 +71,7 @@ export async function registerRoutes({ app, httpServer }: { app: Express, httpSe
         sound: "success_beep",
         report: processedLines.length > 0 
           ? warningHeader + processedLines.join('\n\n') 
-          : warningHeader + "⚠️ INFORMATION NOT FOUND." 
+          : warningHeader + "⚠️ Information Not Found in Databases." 
       });
     } catch (e) { res.status(500).json({ error: "Timeout", sound: "error_buzz" }); }
   });
