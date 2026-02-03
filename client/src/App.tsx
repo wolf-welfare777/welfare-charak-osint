@@ -219,6 +219,8 @@ function App() {
         ) : (
           <motion.div
             key="dashboard"
+            className="min-h-screen overflow-y-auto w-full bg-black
+            text-primary font-mono selection:bg-primary/30"
             initial={{ opacity: 0, filter: "blur(20px)" }}
             animate={{ opacity: 1, filter: "blur(0px)" }}
             transition={{ duration: 1.5 }}
