@@ -11,9 +11,7 @@ import { fileURLToPath } from 'url';
 
 
 // 🚀 Render & Local Compatibility Fix
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+const __dirname = path.resolve();
 export async function registerRoutes({ app, httpServer }: { app: Express, httpServer: Server }) {
   const apiId = 34558337; 
   const apiHash = "f7654966f5280ce988af1551a7149960";
