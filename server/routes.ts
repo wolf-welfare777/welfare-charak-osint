@@ -9,8 +9,10 @@ import input from "input";
 import { savedSession } from "./session";
 import { fileURLToPath } from 'url';
 
+
+// 🚀 Render & Local Compatibility Fix
 const __filename = fileURLToPath(import.meta.url);
-const _dirname = path.dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 export async function registerRoutes({ app, httpServer }: { app: Express, httpServer: Server }) {
   const apiId = 34558337; 
