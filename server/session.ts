@@ -1,1 +1,1 @@
-export const SESSION_STRING = process.env.SESSION_STRING || "";
+export const savedSession = "";
